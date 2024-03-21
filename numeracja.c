@@ -6,6 +6,7 @@
 
 
 int zwroc_wartosc_x_y(const char* nazwa_pliku, int x, int y, int liczba_kolumn) {
+
     FILE* plik_roboczy = fopen(nazwa_pliku, "rb");
     
     if (plik_roboczy == NULL) {
@@ -21,6 +22,7 @@ int zwroc_wartosc_x_y(const char* nazwa_pliku, int x, int y, int liczba_kolumn) 
     fread(&wartosc, sizeof(int), 1, plik_roboczy);
 
     fclose(plik_roboczy);
+    
     return wartosc;
 }
 
@@ -97,15 +99,14 @@ void odwiedz(const char* nazwa_pliku, int x, int y, int wart_akt, int liczba_kol
     
     return;
 }
- 
- 
 
-int main(int argc, char** argv){
-    FILE* plik = fopen(argv[1], "r");
+int wczytaj(char *nazwa_pliku, int *lini)
+ {
+     FILE* plik = fopen(nazwa_pliku, "r");
     
     if(plik == NULL){
         fprintf(stderr, "Nie udało się wczytać pliku! \n");
-        return 1;
+        return -1;
     }
     
     FILE* plik_roboczy = fopen("plik_programu.txt", "rb+");
@@ -153,6 +154,7 @@ int main(int argc, char** argv){
             }
         }
     }
+    
     fclose(plik_roboczy);
     fclose(plik);
     
@@ -162,14 +164,8 @@ int main(int argc, char** argv){
     y0=y0/dl_lin;
     int ile_lin = licz/dl_lin;
 
-    
+    *lini=ile_lin;
     plik_roboczy = fopen("plik_programu.txt", "rb+");
     odwiedz("plik_programu.txt", x0, y0, 0, dl_lin, ile_lin);
-    
-    wydrukuj_plik_binarny("plik_programu.txt", ile_lin, dl_lin);
-    
-    fclose(plik_roboczy);
-    fclose(plik);
-    
-    return 0;
-}
+    return dl_lin;
+ }
