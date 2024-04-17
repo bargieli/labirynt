@@ -50,7 +50,7 @@ int main(int argc, char** argv)
                 exit(EXIT_FAILURE);
         }
     }
-    if(argc<3 || argc==3 && opcja!=-1)
+    if(argc<3 || (argc==3 && opcja!=-1))
     {
     	printf("Użycie: %s maze.txt out.txt [-b][-t]\n Opcja domyslna to -t.\n", argv[0]);
         exit(EXIT_FAILURE);
@@ -151,10 +151,9 @@ int main(int argc, char** argv)
 	    nazwa_pliku="zupelnie_rozszyfrowany.txt";
     }
     else nazwa_pliku=argv[2+opcja];
-	w_y;
 	int m=wczytaj(nazwa_pliku,&w_y);
 	
-    znajdz_koniec(nazwa_pliku,w_y,m);
+    znajdz_koniec(w_y,m);
     dfs("plik_programu.txt",px,py,999999999,kierunek_poczatkowy_x_y,m);
     if(opcja==1) rev_file(argv[3]);
     else rev_file(argv[3+opcja]);

@@ -30,7 +30,7 @@ struct MazeHeader {
 	int px,py;
 	int kierunek_poczatkowy_x_y;
 	FILE *file_pom;
-	void znajdz_koniec(const char* nazwa_pliku,int n,int m) //n-liczba wierszy
+	void znajdz_koniec(int n,int m) //n-liczba wierszy
 	{
 		for(int i=0;i<n;i++)
 		{
@@ -91,8 +91,8 @@ struct MazeHeader {
 			streak=0;
 			if(co==3) return;
 		}
-		if(co==1) fprintf(file_pom,"LEFT\n");
-		else if(co==2) fprintf(file_pom,"RIGHT\n");
+		if(co==1) fprintf(file_pom,"TURNLEFT\n");
+		else if(co==2) fprintf(file_pom,"TURNRIGHT\n");
 	}
 	void dfs(const char* nazwa_pliku,int x, int y,int w_teraz,int kierunek,int w_x) //kierunek od 1 zgodnie ze wskazowkami zegara
 	{
@@ -222,31 +222,40 @@ void rev_file(char *fn)
 
     FILE *plik = fopen("pomocniczy.txt","r");
     FILE *plik_wyj=fopen(fn,"w");
-    int rozmiar, pozycja;
+    
+    int rozm;
+    int poz;
     char znak;
     char buf[2056];
-    int max_dl_linii = sizeof(buf) - 1;
-    int dlugosc_linii = 0;
+    int maks = sizeof(buf) - 1;
+    int dlglinii = 0;
 
     fseek(plik, 0, SEEK_END);
-    rozmiar = ftell(plik);
+    rozm = ftell(plik);
 
-    for (pozycja = rozmiar - 2; pozycja >= 0; pozycja--) {
-        fseek(plik, pozycja, SEEK_SET);
+    for (poz = rozm - 2; poz >= 0; poz--)
+    {
+        fseek(plik, poz, SEEK_SET);
         znak = fgetc(plik);
 
-        if (znak == '\n' || pozycja == 0) {
-            if (pozycja == 0) {
-                buf[dlugosc_linii++] = znak;
-            }
-            for (int i = dlugosc_linii - 1; i >= 0; i--) {
+        if (znak == '\n' || poz == 0)
+        {
+        	if (poz == 0)
+        	{
+                	buf[dlglinii++] = znak;
+		}
+            for (int i = dlglinii - 1; i >= 0; i--)
+            {
                 fprintf(plik_wyj,"%c",buf[i]);
             }
             fprintf(plik_wyj,"\n");
-            dlugosc_linii = 0;
-        } else {
-            if (dlugosc_linii < max_dl_linii) {
-                buf[dlugosc_linii++] = znak;
+            dlglinii= 0;
+        }
+        else
+        {
+            if (dlglinii < maks)
+            {
+                buf[dlglinii++] = znak;
             }
         }
     }
