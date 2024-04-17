@@ -1,30 +1,19 @@
-# Compiler
-CC = gcc
+CC=gcc
+CFLAGS=-Wall -Wextra -std=gnu99
 
-# Compiler flags
-CFLAGS = -Wall -Wextra
+# Lista plików źródłowych
+SOURCES=main.c sciezka.c numeracja.c
+# Lista plików nagłówkowych
+HEADERS=sciezka.h numeracja.h
 
-# Source files
-SRCS = numeracja.c sciezka.c
-OBJS = $(SRCS:.c=.o)
+# Nazwy plików wykonywalnych
+EXECUTABLE=program
 
-# Header files
-HEADERS = numeracja.h
+all: $(EXECUTABLE)
 
-# Executable name
-EXEC = program
+$(EXECUTABLE): $(SOURCES) $(HEADERS)
+	$(CC) $(CFLAGS) -o $@ $(SOURCES)
 
-# Build target
-all: $(EXEC)
-
-$(EXEC): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(EXEC)
-
-# Compile .c files to .o files
-%.o: %.c $(HEADERS)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# Clean up
 clean:
-	rm -f $(EXEC) $(OBJS)
+	rm -f $(EXECUTABLE)
 
