@@ -155,7 +155,7 @@ int main(int argc, char** argv)
 	
     znajdz_koniec(w_y,m);
     dfs("plik_programu.txt",px,py,999999999,kierunek_poczatkowy_x_y,m);
-    if(opcja==1) rev_file(argv[3]);
-    else rev_file(argv[3+opcja]);
+    if(opcja==1) obrot(argv[3]);
+    else obrot(argv[3+opcja]);
     return 0;
 }

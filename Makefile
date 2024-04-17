@@ -6,8 +6,8 @@ SOURCES=main.c sciezka.c numeracja.c
 # Lista plików nagłówkowych
 HEADERS=sciezka.h numeracja.h
 
-# Nazwy plików wykonywalnych
-EXECUTABLE=program
+# Nazwa pliku wykonywalnego
+EXECUTABLE=a.out
 
 all: $(EXECUTABLE)
 

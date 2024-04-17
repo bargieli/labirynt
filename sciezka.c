@@ -217,7 +217,7 @@ struct MazeHeader {
 		fclose(file_pom);
 		
 	}
-void rev_file(char *fn) 
+void obrot(char *fn) 
 {
 
     FILE *plik = fopen("pomocniczy.txt","r");
@@ -226,7 +226,7 @@ void rev_file(char *fn)
     int rozm;
     int poz;
     char znak;
-    char buf[2056];
+    char buf[2100];
     int maks = sizeof(buf) - 1;
     int dlglinii = 0;
 
