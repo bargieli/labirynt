@@ -11,7 +11,7 @@ int zwroc_wartosc_x_y(const char* nazwa_pliku, int x, int y, int liczba_kolumn) 
     
     if (plik_roboczy == NULL) {
         fprintf(stderr, "Nie udało się wczytać pliku! \n");
-        return -10;
+        exit(-10);
     }
      
     // pozycja kursora
@@ -47,7 +47,7 @@ void zmien_wartosc_x_y(const char* nazwa_pliku, int x, int y, int nw_wart, int l
     
     if (plik_roboczy == NULL) {
         fprintf(stderr, "Nie udało się wczytać pliku! \n");
-        return;
+        exit(420);
     }
     
     int wartosc;
@@ -106,7 +106,7 @@ int wczytaj(char *nazwa_pliku, int *lini)
     
     if(plik == NULL){
         fprintf(stderr, "Nie udało się wczytać pliku! \n");
-        return -1;
+        exit(-1);
     }
     
     FILE* plik_roboczy = fopen("plik_programu.txt", "rb+");

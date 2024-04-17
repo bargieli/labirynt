@@ -215,12 +215,14 @@ struct MazeHeader {
 		}
 		wypisz(3);
 		fclose(file_pom);
+		
 	}
 void rev_file(char *fn) 
 {
+
     FILE *plik = fopen("pomocniczy.txt","r");
     FILE *plik_wyj=fopen(fn,"w");
-    long rozmiar, pozycja;
+    int rozmiar, pozycja;
     char znak;
     char buf[2056];
     int max_dl_linii = sizeof(buf) - 1;
@@ -248,7 +250,6 @@ void rev_file(char *fn)
             }
         }
     }
-
     fclose(plik);
 }
     
