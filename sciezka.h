@@ -11,5 +11,5 @@ extern int poprzedni;
 	void znajdz_koniec(int n,int m);
 	void wypisz(int co);
 	void dfs(const char* nazwa_pliku,int x, int y,int w_teraz,int kierunek,int w_x);
-	void rev_file(char *fn);
+	void obrot(char *fn);
 	
