@@ -146,11 +146,13 @@ int main(int argc, char** argv)
 		}
 		fprintf(plik2, "\n");
 	    }
-	    
+	    fclose(plik);
 	    fclose(plik2);
 	    nazwa_pliku="zupelnie_rozszyfrowany.txt";
+	    
     }
     else nazwa_pliku=argv[2];
+    printf("%s \n",nazwa_pliku);
 	int m=wczytaj(nazwa_pliku,&w_y);
 	
     znajdz_koniec(w_y,m);

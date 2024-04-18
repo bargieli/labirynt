@@ -260,6 +260,7 @@ void obrot(char *fn)
         }
     }
     fclose(plik);
+    fclose(plik_wyj);
 }
     
 

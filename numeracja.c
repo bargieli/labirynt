@@ -167,5 +167,6 @@ int wczytaj(char *nazwa_pliku, int *lini)
     *lini=ile_lin;
     plik_roboczy = fopen("plik_programu.txt", "rb+");
     odwiedz("plik_programu.txt", x0, y0, 0, dl_lin, ile_lin);
-    return dl_lin;
+    fclose(plik_roboczy);
+        return dl_lin;
  }
