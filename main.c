@@ -25,37 +25,37 @@ struct MazeHeader {
 int main(int argc, char** argv)
 {
 	int opt; 
-      
     // put ':' in the starting of the 
     // string so that program can  
     //distinguish between '?' and ':'  
-    int opcja=-1; //1 oznacza binarny, 0 lub -1 tekstowy
+    int opcja=-1; //1 oznacza binarny, 0 tekstowy
     while ((opt = getopt(argc, argv, "tb")) != -1) 
     {
         switch (opt) 
         {
             case 'b':
             	opcja=1;
+            	printf("Użycie: maze.bin out.txt [-b]\n Opcja domyslna to -t.\n");
                 break;
             case 't':
-            	if(opcja==1) 
-            	{
-            		printf("Użycie: %s maze.txt out.txt [-b][-t]\n Opcja domyslna to -t.\n", argv[0]);
-                	exit(EXIT_FAILURE);
-            	}
             	opcja=0;
+            	printf("Użycie: maze.txt out.txt [-t]\n Opcja domyslna to -t.\n");
                 break;
             default:
-                printf("Użycie: %s maze.txt out.txt [-b][-t]\n Opcja domyslna to -t.\n", argv[0]);
-                exit(EXIT_FAILURE);
+                printf("Użycie: maze.txt out.txt [-t]\n Opcja domyslna to -t.\n");
         }
     }
-    if(argc<3 || (argc==3 && opcja!=-1))
+    if (opcja==-1 && argc==3) 
     {
-    	printf("Użycie: %s maze.txt out.txt [-b][-t]\n Opcja domyslna to -t.\n", argv[0]);
-        exit(EXIT_FAILURE);
+    	printf("Nie podano flagi\n");
+    	exit(-6);
     }
-    //printf("->%s\n",argv[]);
+	if (argc!=4)
+    {
+    	printf("Zla liczba argumentow\n");
+    	exit(-5);
+    }
+    
     char *nazwa_pliku;
     if(opcja==1)
     {
@@ -150,12 +150,11 @@ int main(int argc, char** argv)
 	    fclose(plik2);
 	    nazwa_pliku="zupelnie_rozszyfrowany.txt";
     }
-    else nazwa_pliku=argv[2+opcja];
+    else nazwa_pliku=argv[2];
 	int m=wczytaj(nazwa_pliku,&w_y);
 	
     znajdz_koniec(w_y,m);
     dfs("plik_programu.txt",px,py,999999999,kierunek_poczatkowy_x_y,m);
-    if(opcja==1) obrot(argv[3]);
-    else obrot(argv[3+opcja]);
+    obrot(argv[3]);
     return 0;
 }
