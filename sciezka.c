@@ -184,6 +184,8 @@ void obrot(char *fn){ // przepisanie wyjscia z pliku pomocniczego (odwroconego) 
 
     fseek(plik, 0, SEEK_END);
     rozm = ftell(plik);
+    
+    fprintf(plik_wyj,"START\n");
 
     for (poz = rozm - 2; poz >= 0; poz--){
         fseek(plik, poz, SEEK_SET);
@@ -205,6 +207,8 @@ void obrot(char *fn){ // przepisanie wyjscia z pliku pomocniczego (odwroconego) 
             }
         }
     }
+    fprintf(plik_wyj,"STOP\n");
+    
     fclose(plik);
     fclose(plik_wyj);
 }
