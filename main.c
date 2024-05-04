@@ -59,7 +59,7 @@ int main(int argc, char** argv)
     char *nazwa_pliku;
     if(opcja==1)
     {
-	    FILE *file = fopen(argv[2], "rb");
+	    FILE *file = fopen(argv[1], "rb");
 	    FILE *plik = fopen("zdekodowany.txt", "w");
 	    
 	    
@@ -151,12 +151,12 @@ int main(int argc, char** argv)
 	    nazwa_pliku="zupelnie_rozszyfrowany.txt";
 	    
     }
-    else nazwa_pliku=argv[2];
+    else nazwa_pliku=argv[1];
     printf("%s \n",nazwa_pliku);
+    //test_stos_pop();
 	int m=wczytaj(nazwa_pliku,&w_y);
-	
     znajdz_koniec(w_y,m);
     dfs("plik_programu.txt",px,py,999999999,kierunek_poczatkowy_x_y,m);
-    obrot(argv[3]);
+    obrot(argv[2]);
     return 0;
 }
