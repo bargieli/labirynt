@@ -4,7 +4,7 @@
 
 //IZABELA BARGIEŁ
 
-#define MAX_SIZE (511900/4)
+#define MAX_SIZE (511900/8)
 
 typedef struct {
     int data[MAX_SIZE];
