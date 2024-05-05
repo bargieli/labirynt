@@ -35,14 +35,14 @@ int main(int argc, char** argv)
         {
             case 'b':
             	opcja=1;
-            	printf("Użycie: maze.bin out.txt [-b]\n Opcja domyslna to -t.\n");
+            	//printf("Użycie: maze.bin out.txt [-b]\n Opcja domyslna to -t.\n");
                 break;
             case 't':
             	opcja=0;
-            	printf("Użycie: maze.txt out.txt [-t]\n Opcja domyslna to -t.\n");
+            	//printf("Użycie: maze.txt out.txt [-t]\n Opcja domyslna to -t.\n");
                 break;
             default:
-                printf("Użycie: maze.txt out.txt [-t]\n Opcja domyslna to -t.\n");
+                //printf("Użycie: maze.txt out.txt [-t]\n Opcja domyslna to -t.\n");
         }
     }
     if (opcja==-1 && argc==3) 
@@ -55,7 +55,6 @@ int main(int argc, char** argv)
     	printf("Zla liczba argumentow\n");
     	exit(-5);
     }
-    
     char *nazwa_pliku;
     if(opcja==1)
     {
@@ -152,9 +151,7 @@ int main(int argc, char** argv)
 	    
     }
     else nazwa_pliku=argv[2];
-    printf("%s \n",nazwa_pliku);
 	int m=wczytaj(nazwa_pliku,&w_y);
-	
     znajdz_koniec(w_y,m);
     dfs("plik_programu.txt",px,py,999999999,kierunek_poczatkowy_x_y,m);
     obrot(argv[3]);

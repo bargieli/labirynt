@@ -72,7 +72,7 @@ void zmien_wartosc_x_y(const char* nazwa_pliku, int x, int y, int nw_wart, int l
 
 void odwiedz(const char* nazwa_pliku, int x, int y, int wart_akt, int liczba_kolumn, int liczba_wierszy){ //nadaje polu o współrzędnych (x, y) wartość jego odległości od punktu początkowego (wart_akt) i odsyłająca do jego sąsiadów, aby im również nadać wartość (wart_akt+1)
 
-    
+    //fprintf(stderr,"%d %d\n",x,y);
     zmien_wartosc_x_y(nazwa_pliku, x, y, wart_akt, liczba_kolumn);
     
     
@@ -106,6 +106,7 @@ void odwiedz(const char* nazwa_pliku, int x, int y, int wart_akt, int liczba_kol
 int wczytaj(char *nazwa_pliku, int *lini) //poddaje plik wejściowy pierwszej obróbce - zamienia znaki na liczby i zapisuje w pliku binarnym o podanej nazwie (nazwa_pliku)
 
  {
+ 	
      FILE* plik = fopen(nazwa_pliku, "r");
     
     if(plik == NULL){
@@ -120,6 +121,7 @@ int wczytaj(char *nazwa_pliku, int *lini) //poddaje plik wejściowy pierwszej ob
     int dl_lin=-1;
     
     char a;
+    
     while((a=fgetc(plik)) != EOF){
         
         // sciana
@@ -158,6 +160,7 @@ int wczytaj(char *nazwa_pliku, int *lini) //poddaje plik wejściowy pierwszej ob
             }
         }
     }
+    
     
     fclose(plik_roboczy);
     fclose(plik);
