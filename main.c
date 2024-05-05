@@ -58,7 +58,7 @@ int main(int argc, char** argv)
     char *nazwa_pliku;
     if(opcja==1)
     {
-	    FILE *file = fopen(argv[2], "rb");
+	    FILE *file = fopen(argv[3], "rb");
 	    FILE *plik = fopen("zdekodowany.txt", "w");
 	    
 	    
@@ -82,23 +82,7 @@ int main(int argc, char** argv)
 	    fread(&header.separator, sizeof(header.separator), 1, file);
 	    fread(&header.wall, sizeof(header.wall), 1, file);
 	    fread(&header.path, sizeof(header.path), 1, file);
-
 	    
-	    // TESTY DO PLIKU BIN
-	   // printf("File ID: %u\n", header.fileId);
-	   // printf("Escape: %u\n", header.escape);
-	   // printf("Columns: %d\n", header.columns);
-	   // printf("Lines: %d\n", header.lines);
-	   // printf("Entry X: %u\n", header.entryX);
-	   // printf("Entry Y: %u\n", header.entryY);
-	   // printf("Exit X: %u\n", header.exitX);
-	   // printf("Exit Y: %u\n", header.exitY);
-	   // printf("Counter: %u\n", header.counter);
-	   // printf("Solution Offset: %u\n", header.solutionOffset);
-	   // printf("Separator: %u\n", header.separator);
-	   // printf("Wall: %u\n", header.wall);
-	   // printf("Path: %u\n", header.path);
-	     
 	    uint8_t values[3];
 	    for(int i=0; i<=header.columns*header.lines; i+=values[2]+1){
 		fread(values, sizeof(uint8_t), 3, file); // Odczytaj 3 wartości z pliku binarnego
@@ -151,9 +135,21 @@ int main(int argc, char** argv)
 	    
     }
     else nazwa_pliku=argv[2];
+
 	int m=wczytaj(nazwa_pliku,&w_y);
+
+    //printf("wczytaj: %s \n",nazwa_pliku);
+	int m=wczytaj(nazwa_pliku,&w_y);
+	
+	//printf("znajdz_koniec\n");
     znajdz_koniec(w_y,m);
+
+    //printf("dfs\n");
     dfs("plik_programu.txt",px,py,999999999,kierunek_poczatkowy_x_y,m);
+
+    //printf("obrot %s\n", argv[3]);
     obrot(argv[3]);
+
+    //printf("KONIEC\n");
     return 0;
 }

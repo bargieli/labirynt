@@ -1,16 +1,74 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <unistd.h>
 
 //IZABELA BARGIEŁ
 
 
-int zwroc_wartosc_x_y(const char* nazwa_pliku, int x, int y, int liczba_kolumn) { //zwraca wartość liczbową pola o konkretnych współrzędnych (x, y) z labiryntu zapisanego w formie pliku binarnego
+#define MAX_SIZE ((512000/4)-10200)
 
+typedef struct {
+    int data[MAX_SIZE];
+    int front;
+    int rear;
+} Queue;
+
+Queue* createQueue() {
+    Queue* q = (Queue*)malloc(sizeof(Queue));
+    if (q == NULL) {
+        fprintf(stderr, "Błąd alokacji pamięci!\n");
+        exit(EXIT_FAILURE);
+    }
+    q->front = -1;
+    q->rear = -1;
+    return q;
+}
+
+// sprawdza czy kolejka jest pusta
+int isEmpty(Queue* q) {
+    return (q->front == -1 && q->rear == -1);
+}
+
+// dodaje element do kolejki
+void q_dodaj(Queue* q, int value) {
+    if ((q->rear + 1) % MAX_SIZE == q->front) {
+        fprintf(stderr, "Kolejka pełna!\n");
+        exit(EXIT_FAILURE);
+    } else if (isEmpty(q)) {
+        q->front = q->rear = 0;
+    } else {
+        q->rear = (q->rear + 1) % MAX_SIZE;
+    }
+    q->data[q->rear] = value;
+}
+
+// zwraca i usuwa pierwszy element kolejki
+int q_pop(Queue* q) {
+    if (isEmpty(q)) {
+        fprintf(stderr, "Kolejka pusta!\n");
+        exit(EXIT_FAILURE);
+    } else if (q->front == q->rear) {
+        int value = q->data[q->front];
+        q->front = q->rear = -1;
+        return value;
+    } else {
+        int value = q->data[q->front];
+        q->front = (q->front + 1) % MAX_SIZE;
+        return value;
+    }
+}
+
+// zwalnia pamiec uzywana przez kolejke
+void freeQueue(Queue* q) {
+    free(q);
+}
+
+// zwraca wartość liczbową pola o konkretnych współrzędnych (x, y) z pliku binarnego
+int zwroc_wartosc_x_y(const char* nazwa_pliku, int x, int y, int liczba_kolumn) { 
     FILE* plik_roboczy = fopen(nazwa_pliku, "rb");
     
     if (plik_roboczy == NULL) {
-        fprintf(stderr, "Nie udało się wczytać pliku! \n");
+        fprintf(stderr, "Nie udało się wczytać pliku! ZWROC\n");
         exit(-10);
     }
      
@@ -26,29 +84,13 @@ int zwroc_wartosc_x_y(const char* nazwa_pliku, int x, int y, int liczba_kolumn) 
     return wartosc;
 }
 
-
-void wydrukuj_plik_binarny(const char* nazwa_pliku, int ile_lin, int dl_lin){ //funkcja testowa, drukuje zdekodowane wartości znajdujące się w pliku binarnym
-
-    printf("\n\n");
-    for(int i=0; i<ile_lin; i++){
-        for(int j=0; j<dl_lin; j++){
-            printf("%d ", zwroc_wartosc_x_y(nazwa_pliku, j, i, dl_lin));
-        }
-        printf("\n");
-    }
-    printf("\n\n");
-    
-}
-
-
-
-
-void zmien_wartosc_x_y(const char* nazwa_pliku, int x, int y, int nw_wart, int liczba_kolumn) { ///modyfikuje pole o podanych współrzędnych (x, y) w pliku binarnym nadając mu nową wartość (nw_wart)
+// modyfikuje pole o podanych współrzędnych (x, y) w pliku binarnym nadając mu nową wartość (nw_wart)
+void zmien_wartosc_x_y(const char* nazwa_pliku, int x, int y, int nw_wart, int liczba_kolumn) { 
 
     FILE* plik_roboczy = fopen(nazwa_pliku, "rb+");
     
     if (plik_roboczy == NULL) {
-        fprintf(stderr, "Nie udało się wczytać pliku! \n");
+        fprintf(stderr, "Nie udało się wczytać pliku! ZMIEN WART\n");
         exit(420);
     }
     
@@ -68,9 +110,17 @@ void zmien_wartosc_x_y(const char* nazwa_pliku, int x, int y, int nw_wart, int l
     fclose(plik_roboczy);
 }
 
+// zapisuje labirynt w postaci pliku binarnego z odleglosciami od startu
+void odwiedz(const char* nazwa_pliku, int x, int y, int liczba_kolumn, int liczba_wierszy) {
+    Queue* q = createQueue();
 
+    zmien_wartosc_x_y(nazwa_pliku, x, y, 0, liczba_kolumn);
+    q_dodaj(q, x + y * liczba_kolumn);
 
-void odwiedz(const char* nazwa_pliku, int x, int y, int wart_akt, int liczba_kolumn, int liczba_wierszy){ //nadaje polu o współrzędnych (x, y) wartość jego odległości od punktu początkowego (wart_akt) i odsyłająca do jego sąsiadów, aby im również nadać wartość (wart_akt+1)
+    while (!isEmpty(q)) {
+        int akt_pole = q_pop(q);
+        x = akt_pole % liczba_kolumn;
+        y = akt_pole / liczba_kolumn;
 
     //fprintf(stderr,"%d %d\n",x,y);
     zmien_wartosc_x_y(nazwa_pliku, x, y, wart_akt, liczba_kolumn);
@@ -79,34 +129,36 @@ void odwiedz(const char* nazwa_pliku, int x, int y, int wart_akt, int liczba_kol
     if(x<liczba_kolumn-1){
         if(zwroc_wartosc_x_y(nazwa_pliku, x+1, y, liczba_kolumn)==(-2) ||  zwroc_wartosc_x_y(nazwa_pliku, x+1, y, liczba_kolumn)>wart_akt+1){
             odwiedz(nazwa_pliku, x+1, y, wart_akt+1, liczba_kolumn, liczba_wierszy);
+
+        int dx[] = {1, -1, 0, 0};
+        int dy[] = {0, 0, 1, -1};
+
+        for (int i = 0; i < 4; ++i) {
+            int new_x = x + dx[i];
+            int new_y = y + dy[i];
+
+            if (new_x >= 0 && new_x < liczba_kolumn && new_y >= 0 && new_y < liczba_wierszy) {
+                int wartosc = zwroc_wartosc_x_y(nazwa_pliku, new_x, new_y, liczba_kolumn);
+                // sprawdzenie czy sąsiad nie został odwiedzony
+                if (wartosc == -2) {
+                    q_dodaj(q, new_x + new_y * liczba_kolumn); 
+                    zmien_wartosc_x_y(nazwa_pliku, new_x, new_y, zwroc_wartosc_x_y(nazwa_pliku, x, y, liczba_kolumn) + 1, liczba_kolumn); 
+                }
+            }
         }
     }
-    
-    if(y<liczba_wierszy-1){
-        if(zwroc_wartosc_x_y(nazwa_pliku, x, y+1, liczba_kolumn)==(-2) ||  zwroc_wartosc_x_y(nazwa_pliku, x, y+1, liczba_kolumn)>wart_akt+1){
-            odwiedz(nazwa_pliku, x, y+1, wart_akt+1, liczba_kolumn, liczba_wierszy);
-        }
-    }
-    
-    if(x>0){
-        if(zwroc_wartosc_x_y(nazwa_pliku, x-1, y, liczba_kolumn)==(-2) ||  zwroc_wartosc_x_y(nazwa_pliku, x-1, y, liczba_kolumn)>wart_akt+1){
-            odwiedz(nazwa_pliku, x-1, y, wart_akt+1, liczba_kolumn, liczba_wierszy);
-        }
-    }
-    
-    if(y>0){
-        if(zwroc_wartosc_x_y(nazwa_pliku, x, y-1, liczba_kolumn)==(-2) ||  zwroc_wartosc_x_y(nazwa_pliku, x, y-1, liczba_kolumn)>wart_akt+1){
-            odwiedz(nazwa_pliku, x, y-1, wart_akt+1, liczba_kolumn, liczba_wierszy);
-        }
-    }
-    
-    return;
 }
 
-int wczytaj(char *nazwa_pliku, int *lini) //poddaje plik wejściowy pierwszej obróbce - zamienia znaki na liczby i zapisuje w pliku binarnym o podanej nazwie (nazwa_pliku)
+
 
  {
  	
+
+ 
+ 
+// zamienia znaki na liczby i zapisuje w pliku binarnym o podanej nazwie (nazwa_pliku) 
+int wczytaj(char *nazwa_pliku, int *lini) {
+
      FILE* plik = fopen(nazwa_pliku, "r");
     
     if(plik == NULL){
@@ -173,7 +225,7 @@ int wczytaj(char *nazwa_pliku, int *lini) //poddaje plik wejściowy pierwszej ob
 
     *lini=ile_lin;
     plik_roboczy = fopen("plik_programu.txt", "rb+");
-    odwiedz("plik_programu.txt", x0, y0, 0, dl_lin, ile_lin);
+    odwiedz("plik_programu.txt", x0, y0, dl_lin, ile_lin);
     fclose(plik_roboczy);
         return dl_lin;
  }
