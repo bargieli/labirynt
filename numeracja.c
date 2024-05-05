@@ -4,7 +4,8 @@
 
 //IZABELA BARGIEŁ
 
-#define MAX_SIZE (511900/8)
+
+#define MAX_SIZE (511900/4)
 
 typedef struct {
     int data[MAX_SIZE];
@@ -79,6 +80,43 @@ int zwroc_wartosc_x_y(const char* nazwa_pliku, int x, int y, int liczba_kolumn) 
     
     return wartosc;
 }
+
+/*
+int q_pop(const char* nazwa_pliku) { //zwraca wartość liczbową pola o konkretnych współrzędnych (x, y) z labiryntu zapisanego w formie pliku binarnego
+    FILE* plik = fopen(nazwa_pliku, "rb+");
+
+    if (plik == NULL) {
+        fprintf(stderr, "Nie udało się otworzyć pliku %s! STOS_POP\n", nazwa_pliku);
+        exit(-1);
+    }
+
+    int ostatnia = 0;
+    fseek(plik, -sizeof(int), SEEK_END);
+    fread(&ostatnia, sizeof(int), 1, plik);
+    ftruncate(fileno(plik), ftell(plik) - sizeof(int));
+    fclose(plik);
+
+    return ostatnia;
+}
+
+
+void dodaj_wartosc_do_pliku(const char* nazwa_pliku, int wartosc) {
+    FILE* plik = fopen(nazwa_pliku, "ab"); // Otwórz plik do dopisywania na koniec w trybie binarnym
+    
+    if (plik == NULL) {
+        fprintf(stderr, "Nie udało się otworzyć pliku! DODAJ WART\n");
+        exit(-1);
+    }
+    
+    // Ustaw kursor na koniec pliku
+    fseek(plik, 0, SEEK_END);
+    
+    // Zapisz wartość na koniec pliku
+    fwrite(&wartosc, sizeof(int), 1, plik);
+    
+    fclose(plik);
+}
+*/
 
 
 void zmien_wartosc_x_y(const char* nazwa_pliku, int x, int y, int nw_wart, int liczba_kolumn) { //modyfikuje pole o podanych współrzędnych (x, y) w pliku binarnym nadając mu nową wartość (nw_wart)
