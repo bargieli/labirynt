@@ -138,18 +138,13 @@ int main(int argc, char** argv)
 
 	int m=wczytaj(nazwa_pliku,&w_y);
 
-    //printf("wczytaj: %s \n",nazwa_pliku);
 	int m=wczytaj(nazwa_pliku,&w_y);
 	
-	//printf("znajdz_koniec\n");
     znajdz_koniec(w_y,m);
 
-    //printf("dfs\n");
     dfs("plik_programu.txt",px,py,999999999,kierunek_poczatkowy_x_y,m);
 
-    //printf("obrot %s\n", argv[3]);
     obrot(argv[3]);
 
-    //printf("KONIEC\n");
     return 0;
 }
