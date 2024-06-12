@@ -136,7 +136,6 @@ int main(int argc, char** argv)
     }
     else nazwa_pliku=argv[2];
 
-	int m=wczytaj(nazwa_pliku,&w_y);
 
 	int m=wczytaj(nazwa_pliku,&w_y);
 	
