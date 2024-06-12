@@ -24,10 +24,7 @@ struct MazeHeader {
 };
 int main(int argc, char** argv)
 {
-	int opt; 
-    // put ':' in the starting of the 
-    // string so that program can  
-    //distinguish between '?' and ':'  
+    int opt; 
     int opcja=-1; //1 oznacza binarny, 0 tekstowy
     while ((opt = getopt(argc, argv, "tb")) != -1) 
     {
