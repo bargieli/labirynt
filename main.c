@@ -24,7 +24,10 @@ struct MazeHeader {
 };
 int main(int argc, char** argv)
 {
-    int opt; 
+	int opt; 
+    // put ':' in the starting of the 
+    // string so that program can  
+    //distinguish between '?' and ':'  
     int opcja=-1; //1 oznacza binarny, 0 tekstowy
     while ((opt = getopt(argc, argv, "tb")) != -1) 
     {
@@ -32,14 +35,14 @@ int main(int argc, char** argv)
         {
             case 'b':
             	opcja=1;
-            	//printf("Użycie: maze.bin out.txt [-b]\n Opcja domyslna to -t.\n");
+            	printf("Użycie: maze.bin out.txt [-b]\n Opcja domyslna to -t.\n");
                 break;
             case 't':
             	opcja=0;
-            	//printf("Użycie: maze.txt out.txt [-t]\n Opcja domyslna to -t.\n");
+            	printf("Użycie: maze.txt out.txt [-t]\n Opcja domyslna to -t.\n");
                 break;
             default:
-                //printf("Użycie: maze.txt out.txt [-t]\n Opcja domyslna to -t.\n");
+                printf("Użycie: maze.txt out.txt [-t]\n Opcja domyslna to -t.\n");
         }
     }
     if (opcja==-1 && argc==3) 
@@ -52,6 +55,7 @@ int main(int argc, char** argv)
     	printf("Zla liczba argumentow\n");
     	exit(-5);
     }
+    
     char *nazwa_pliku;
     if(opcja==1)
     {
@@ -132,15 +136,18 @@ int main(int argc, char** argv)
 	    
     }
     else nazwa_pliku=argv[2];
-
-
+    //printf("wczytaj: %s \n",nazwa_pliku);
 	int m=wczytaj(nazwa_pliku,&w_y);
 	
+	//printf("znajdz_koniec\n");
     znajdz_koniec(w_y,m);
 
+    //printf("dfs\n");
     dfs("plik_programu.txt",px,py,999999999,kierunek_poczatkowy_x_y,m);
 
+    //printf("obrot %s\n", argv[3]);
     obrot(argv[3]);
 
+    //printf("KONIEC\n");
     return 0;
 }

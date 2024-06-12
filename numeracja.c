@@ -122,14 +122,6 @@ void odwiedz(const char* nazwa_pliku, int x, int y, int liczba_kolumn, int liczb
         x = akt_pole % liczba_kolumn;
         y = akt_pole / liczba_kolumn;
 
-    //fprintf(stderr,"%d %d\n",x,y);
-    zmien_wartosc_x_y(nazwa_pliku, x, y, wart_akt, liczba_kolumn);
-    
-    
-    if(x<liczba_kolumn-1){
-        if(zwroc_wartosc_x_y(nazwa_pliku, x+1, y, liczba_kolumn)==(-2) ||  zwroc_wartosc_x_y(nazwa_pliku, x+1, y, liczba_kolumn)>wart_akt+1){
-            odwiedz(nazwa_pliku, x+1, y, wart_akt+1, liczba_kolumn, liczba_wierszy);
-
         int dx[] = {1, -1, 0, 0};
         int dy[] = {0, 0, 1, -1};
 
@@ -151,14 +143,10 @@ void odwiedz(const char* nazwa_pliku, int x, int y, int liczba_kolumn, int liczb
 
 
 
- {
- 	
-
  
  
 // zamienia znaki na liczby i zapisuje w pliku binarnym o podanej nazwie (nazwa_pliku) 
 int wczytaj(char *nazwa_pliku, int *lini) {
-
      FILE* plik = fopen(nazwa_pliku, "r");
     
     if(plik == NULL){
@@ -173,7 +161,6 @@ int wczytaj(char *nazwa_pliku, int *lini) {
     int dl_lin=-1;
     
     char a;
-    
     while((a=fgetc(plik)) != EOF){
         
         // sciana
@@ -212,7 +199,6 @@ int wczytaj(char *nazwa_pliku, int *lini) {
             }
         }
     }
-    
     
     fclose(plik_roboczy);
     fclose(plik);
